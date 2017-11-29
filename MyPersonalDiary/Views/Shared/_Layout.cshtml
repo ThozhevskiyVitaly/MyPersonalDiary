@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/Diary/css")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+       <div class="container">
+            <div class="navbar-header">
+                <a href="#anchor"><i class="navbar-brand fa fa-anchor fa-2x" aria-hidden="true"></i></a>
+                @Html.ActionLink(" ", "Records", "Diary", null, new { @class = "navbar-brand fa fa-home fa-3x" })
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li>@Html.ActionLink(" ", "Logout", "Diary", null, new { @class = "fa fa-sign-out fa-3x" })</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-10">
+                    <div id="content">
+                        @Scripts.Render("~/bundles/Diary/js")
+                        @RenderBody()
+                        <div id="anchor"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+</body>
+</html>

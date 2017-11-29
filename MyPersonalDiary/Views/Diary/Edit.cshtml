@@ -1,0 +1,52 @@
+﻿@model MyPersonalDiary.Models.EditRecordViewModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="panel panel-default">
+<div class="panel-heading">Edit record</div>
+@using (Html.BeginForm("Edit", "Diary", FormMethod.Post, new {enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary() 
+    @Html.HiddenFor(m => m.RecordId)
+    @Html.HiddenFor(m => m.ImageData)
+    @Html.HiddenFor(m => m.ImageMimeType)
+    <div class="panel-body">
+        @if (Model.ImageMimeType != null)
+        {
+        <img class="img-thumbnail col-md-8" src="@Url.Action("GetImage","Diary",new {Model.RecordId})" />
+        <br />
+        }
+         @Html.TextAreaFor(m => m.Content, new { @class= "col-md-10, cols=100" })
+        <div style='height: 0px;width:0px; overflow:hidden'>
+            <input id="upfile" type="file" value="upload" name="Image" />
+            <input id="edit" type="submit" />
+            <input id="reset" type="reset" />
+        </div>
+    </div>
+    <div class="panel-footer">
+        <div class="btn-group-justified">
+            <div id="attachBtn" class="fa fa-paperclip fa-lg btn btn-default"></div>
+            <div id="attachEdit" class="fa fa-check fa-lg btn btn-default"></div>
+            <div id="attachReset" class="fa fa-reply fa-lg btn btn-default"></div>
+        </div> 
+    </div>
+ }
+</div>
+<script>
+        $(document).ready(
+            function () {
+                $("#attachBtn").click(function () { $("#upfile").click(); });
+                $("#attachEdit").click(function () { $("#edit").click(); });
+                $("#attachReset").click(function () { $("#reset").click(); });
+            });
+</script>
+
+
+
+
+
+
+

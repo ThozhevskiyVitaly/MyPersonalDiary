@@ -1,0 +1,69 @@
+﻿@model MyPersonalDiary.Models.RecordListViewModel
+
+@{
+    ViewBag.Title = "Records";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+@Html.ActionLink(" ", "CreateRecord", null, new { @class = "fa fa-plus fa-3x btn btn-default" })
+<br />
+<hr />
+@using (Html.BeginForm("FilterRecords", "Diary", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+{
+    <div class="form-group">
+        <div class="col-md-12">
+            <input class="form-control" type="date" id="date" name="date" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <div id="attachSearch" class="fa fa-search fa-lg"></div>
+        </div>
+    </div>
+    <div style='height: 0px;width:0px; overflow:hidden'>
+        <input id="search" type="submit" />
+    </div>  
+}
+<script>
+    $(document).ready(
+        function () {
+            $("#attachSearch").click(function () { $("#search").click(); });
+        });
+</script>
+<br />
+<hr />
+<h2 class="label label-info fa-2x">Records<span class="badge fa-lg">@Model.Records.Count</span></h2>
+<hr />
+<div class="panel-group">
+    @foreach (var item in Model.Records)
+     {
+        <div class="panel panel-default">
+            <div class="panel panel-heading">
+                <p class="label label-default">@item.DateOfCreating.ToShortDateString()</p>
+            </div>
+            <div class="panel panel-body">
+                @if (item.ImageMimeType != null)
+                {
+                    <img class="img-thumbnail col-md-8" src="@Url.Action("GetImage","Diary",new {item.RecordId})" />
+                    <br />
+                }
+                <p class="col-md-8">@item.Content</p>
+            </div>
+            <div class="panel panel-footer">
+                @if (item.CanBeDeleted)
+                 {
+                    <div class="btn-group">
+                        @Html.ActionLink(" ", "DeleteRecord", new { id = @item.RecordId, page = @Model.Page.CurrentPage }, new { @class = "fa fa-trash-o fa-lg btn btn-default" })
+                        @Html.ActionLink(" ", "Edit", "Diary", new { id = @item.RecordId }, new { @class = "fa fa-pencil fa-lg btn btn-default" })
+                    </div>
+                 }
+            </div>
+        </div>
+     }
+</div>
+<br />
+<div class="btn-group col-md-2 col-md-push-1">    
+    @Html.PageLinks(Model.Page, x => Url.Action("List", new { page = x })) 
+</div>
+
+

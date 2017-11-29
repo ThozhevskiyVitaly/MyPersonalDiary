@@ -1,0 +1,23 @@
+﻿ body {
+    margin: 0px;
+    padding: 0px;
+    color: #666;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 14px;
+    line-height: 1.5em;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding:70px 15px 15px 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+p{
+    text-align:justify
+}
