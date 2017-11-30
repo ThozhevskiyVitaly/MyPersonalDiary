@@ -1,25 +1,25 @@
 ﻿@model MyPersonalDiary.Models.CreateRecordViewModel
 
 @{
-    ViewBag.Title = "Records";
+    ViewBag.Title = "Create record";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="panel panel-primary">
     <div class="panel-heading">Create new record</div>
+    
     @using (Html.BeginForm("CreateRecord", "Diary", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
+    {<div class="panel-body">
         @Html.AntiForgeryToken()
         @Html.ValidationSummary()
         @Html.HiddenFor(m => m.ImageData)
         @Html.HiddenFor(m => m.ImageMimeType)
-        <div class="panel-body">
-            @Html.TextAreaFor(m=>m.Content, new { @class = "col-md-10, rows=30" })
-            <div style='height: 0px;width:0px; overflow:hidden'>
-                <input id="upfile" type="file" value="upload" name="Image" />
-                <input id="create" type="submit" />
-                <input id="reset" type="reset" />
-            </div>
+        @Html.TextAreaFor(m => m.Content, new { width = "100%" })
+        <div style='height: 0px;width:0px; overflow:hidden'>
+            <input id="upfile" type="file" value="upload" name="Image" />
+            <input id="create" type="submit" />
+            <input id="reset" type="reset" />
         </div>
+    </div>
         <div class="panel-footer">
             <div class="btn-group-justified">
                 <div id="attachBtn" class="fa fa-paperclip fa-lg btn btn-default"></div>
