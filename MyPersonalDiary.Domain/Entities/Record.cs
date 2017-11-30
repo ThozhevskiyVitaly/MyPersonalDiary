@@ -10,5 +10,6 @@ namespace MyPersonalDiary.Domain.Entities
         public byte[] ImageData { get; set; }
         public string ImageMimeType { get; set; }
         public string AuthorName { get; set; }
+        public bool CanBeDeleted { get; set; }
     }
 }

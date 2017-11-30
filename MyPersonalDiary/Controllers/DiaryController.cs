@@ -113,6 +113,7 @@ namespace MyPersonalDiary.Controllers
                 var user = repository.Users.Get(User.Identity.Name);
                 record.DateOfCreating = DateTime.Now;
                 record.AuthorName = user.Name;
+                record.CanBeDeleted = true;
                 repository.Records.Create(record);
                 repository.Save();
                 ViewBag.CountOfRecords=LoadRecords(user.Name, records.Page.CurrentPage);
@@ -179,22 +180,18 @@ namespace MyPersonalDiary.Controllers
                 if (findedRecords.Count()==(page-1)*NumPerPage) count = page - 1;
                 else count = page;
             }
-            List <RecordViewModel> loadRecords = Mapper.Map<IEnumerable<Record>, List<RecordViewModel>>(findedRecords.Skip((count - 1) * NumPerPage).Take(NumPerPage));
-           
-            records.Records = CanDelete(loadRecords);
+            records.Records = Mapper.Map<IEnumerable<Record>, List<RecordViewModel>>(findedRecords.Skip((count - 1) * NumPerPage).Take(NumPerPage));
             records.Page = new Page { CurrentPage = count, ItemsPerPage = NumPerPage, TotalItems =findedRecords.Count()};
             return findedRecords.Count();
         }
         [NonAction]
         private int LoadRecords(string userName, DateTime date, int page=1)
         {
-            var findedRecords = repository.Records.FilterByDate(date);
-            List<RecordViewModel> filteredRecords = Mapper.Map<IEnumerable<Record>, List<RecordViewModel>>(findedRecords.Skip((page - 1) * NumPerPage).Take(NumPerPage));
-            records.Records = CanDelete(filteredRecords);
+            var findedRecords = repository.Records.FilterByDate(date, User.Identity.Name);
+            records.Records = Mapper.Map<IEnumerable<Record>, List<RecordViewModel>>(findedRecords.Skip((page - 1) * NumPerPage).Take(NumPerPage));
             records.Page = new Page { CurrentPage = page, ItemsPerPage = NumPerPage, TotalItems = findedRecords.Count() };
             return findedRecords.Count();
         }
-       
         public FileContentResult GetImage(int recordId)
         {
             Record record = repository.Records.Get(recordId);
@@ -206,21 +203,6 @@ namespace MyPersonalDiary.Controllers
             {
                 return null;
             }
-        }
-        [NonAction]
-        public bool CanBeDeleted(Record record) => repository.Records.CanBeDeleted(record);
-        [NonAction]
-        public List<RecordViewModel> CanDelete(List<RecordViewModel> records)
-        {
-            foreach (var r in records)
-            {
-                if (!r.CanBeDeleted)
-                {
-                    var record = Mapper.Map<RecordViewModel, Record>(r);
-                    r.CanBeDeleted = CanBeDeleted(record);
-                }
-            }
-            return records;
         }
     }
 }

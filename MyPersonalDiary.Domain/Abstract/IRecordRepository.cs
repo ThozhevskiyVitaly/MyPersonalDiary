@@ -11,7 +11,7 @@ namespace MyPersonalDiary.Domain.Abstract
         void Delete(int id);
         Record Get(int id);
         bool CanBeDeleted(Record record);
-        List<Record> FilterByDate(DateTime date);
+        List<Record> FilterByDate(DateTime date, string userName);
         void Update(Record record);
     }
 }
