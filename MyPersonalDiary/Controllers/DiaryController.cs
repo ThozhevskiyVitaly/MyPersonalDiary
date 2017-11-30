@@ -27,7 +27,7 @@ namespace MyPersonalDiary.Controllers
         }
         public ViewResult List(int page = 1)
         {
-            ViewBag.CountOfRecords=LoadRecords(User.Identity.Name, page);
+             ViewBag.CountOfRecords=LoadRecords(User.Identity.Name, page);
              return View("Records",records);
         }
         [AllowAnonymous]
@@ -43,7 +43,7 @@ namespace MyPersonalDiary.Controllers
             {
                 if (authProvider.Authenticate(Mapper.Map<LoginViewModel,User>(model)))
                 {
-                    LoadRecords(model.Name);
+                    ViewBag.CountOfRecords =LoadRecords(model.Name);
                     return View("Records",records);
                 }
                 else
@@ -89,8 +89,8 @@ namespace MyPersonalDiary.Controllers
         }
         public ViewResult Records()
         {
-           ViewBag.CountOfRecords=LoadRecords(User.Identity.Name);
-            return View("Records", records);
+            ViewBag.CountOfRecords=LoadRecords(User.Identity.Name);
+            return View(records);
         }
         public ActionResult CreateRecord()
         {
@@ -115,7 +115,7 @@ namespace MyPersonalDiary.Controllers
                 record.AuthorName = user.Name;
                 repository.Records.Create(record);
                 repository.Save();
-               ViewBag.CountOfRecords=LoadRecords(user.Name, records.Page.CurrentPage);
+                ViewBag.CountOfRecords=LoadRecords(user.Name, records.Page.CurrentPage);
                 return View("Records", records);
             }
             else
