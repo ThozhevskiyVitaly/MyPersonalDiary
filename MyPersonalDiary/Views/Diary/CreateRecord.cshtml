@@ -6,28 +6,30 @@
 }
 <div class="panel panel-primary">
     <div class="panel-heading">Create new record</div>
-    
-    @using (Html.BeginForm("CreateRecord", "Diary", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {<div class="panel-body">
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary()
-        @Html.HiddenFor(m => m.ImageData)
-        @Html.HiddenFor(m => m.ImageMimeType)
-        @Html.TextAreaFor(m => m.Content, new { width = "100%" })
-        <div style='height: 0px;width:0px; overflow:hidden'>
-            <input id="upfile" type="file" value="upload" name="Image" />
-            <input id="create" type="submit" />
-            <input id="reset" type="reset" />
+    <div class="panel-body">
+        @using (Html.BeginForm("CreateRecord", "Diary", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            @Html.HiddenFor(m => m.ImageData)
+            @Html.HiddenFor(m => m.ImageMimeType)
+            <div class="form-group col-md-12" style="padding:0px;margin:0px">
+                    @Html.TextAreaFor(m => m.Content,20,150,new {@class="form-control"})
+            </div>
+            <div style='height:0px;width:0px; overflow:hidden'>
+                <input id="upfile" type="file" value="upload" name="Image" />
+                <input id="create" type="submit" />
+                <input id="reset" type="reset" />
+            </div>
+        }
+    </div>
+    <div class="panel-footer">
+        <div class="btn-group-justified">
+            <div id="attachBtn" class="fa fa-paperclip fa-lg btn btn-default"></div>
+            <div id="attachCreate" class="fa fa-check fa-lg btn btn-default"></div>
+            <div id="attachReset" class="fa fa-reply fa-lg btn btn-default"></div>
         </div>
     </div>
-        <div class="panel-footer">
-            <div class="btn-group-justified">
-                <div id="attachBtn" class="fa fa-paperclip fa-lg btn btn-default"></div>
-                <div id="attachCreate" class="fa fa-check fa-lg btn btn-default"></div>
-                <div id="attachReset" class="fa fa-reply fa-lg btn btn-default"></div>
-            </div>
-        </div>
-    }
 </div>
 <script>
         $(document).ready(

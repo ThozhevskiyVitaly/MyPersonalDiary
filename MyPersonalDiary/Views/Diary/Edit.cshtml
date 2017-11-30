@@ -6,34 +6,37 @@
 }
 <div class="panel panel-default">
 <div class="panel-heading">Edit record</div>
-@using (Html.BeginForm("Edit", "Diary", FormMethod.Post, new {enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary() 
-    @Html.HiddenFor(m => m.RecordId)
-    @Html.HiddenFor(m => m.ImageData)
-    @Html.HiddenFor(m => m.ImageMimeType)
     <div class="panel-body">
-        @if (Model.ImageMimeType != null)
+        @using (Html.BeginForm("Edit", "Diary", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", role = "form" }))
         {
-        <img class="img-thumbnail col-md-8" src="@Url.Action("GetImage","Diary",new {Model.RecordId})" />
-        <br />
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            @Html.HiddenFor(m => m.RecordId)
+            @Html.HiddenFor(m => m.ImageData)
+            @Html.HiddenFor(m => m.ImageMimeType)
+
+            if (Model.ImageMimeType != null)
+            {
+                <img class="img-thumbnail col-md-12" src="@Url.Action("GetImage","Diary",new {Model.RecordId})" />
+                <br />
+            }
+            <div class="form-group col-md-12" style="padding:0px;margin:0px">
+                @Html.TextAreaFor(m => m.Content, 10, 50, new { @class = "form-control" })
+            </div>
+            <div style='height: 0px;width:0px; overflow:hidden'>
+                <input id="upfile" type="file" value="upload" name="Image" />
+                <input id="edit" type="submit" />
+                <input id="reset" type="reset" />
+            </div>
         }
-         @Html.TextAreaFor(m => m.Content, new { @class= "col-md-10, cols=100" })
-        <div style='height: 0px;width:0px; overflow:hidden'>
-            <input id="upfile" type="file" value="upload" name="Image" />
-            <input id="edit" type="submit" />
-            <input id="reset" type="reset" />
-        </div>
     </div>
     <div class="panel-footer">
         <div class="btn-group-justified">
             <div id="attachBtn" class="fa fa-paperclip fa-lg btn btn-default"></div>
             <div id="attachEdit" class="fa fa-check fa-lg btn btn-default"></div>
             <div id="attachReset" class="fa fa-reply fa-lg btn btn-default"></div>
-        </div> 
+        </div>
     </div>
- }
 </div>
 <script>
         $(document).ready(
