@@ -32,7 +32,7 @@
 </script>
 <br />
 <hr />
-<h2 class="label label-info fa-2x">Records<span class="badge fa-lg">@Model.Records.Count</span></h2>
+<h2 class="label label-info fa-2x">Records<span class="badge fa-lg">@ViewBag.CountOfRecords</span></h2>
 <hr />
 <div class="panel-group">
     @foreach (var item in Model.Records)
@@ -47,7 +47,7 @@
                     <img class="img-thumbnail col-md-8" src="@Url.Action("GetImage","Diary",new {item.RecordId})" />
                     <br />
                 }
-                <p class="col-md-8">@item.Content</p>
+                <p class="col-md-12">@item.Content</p>
             </div>
             <div class="panel panel-footer">
                 @if (item.CanBeDeleted)

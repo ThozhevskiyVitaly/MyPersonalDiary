@@ -27,7 +27,7 @@ namespace MyPersonalDiary.Controllers
         }
         public ViewResult List(int page = 1)
         {
-             LoadRecords(User.Identity.Name, page);
+            ViewBag.CountOfRecords=LoadRecords(User.Identity.Name, page);
              return View("Records",records);
         }
         [AllowAnonymous]
@@ -89,7 +89,7 @@ namespace MyPersonalDiary.Controllers
         }
         public ViewResult Records()
         {
-            LoadRecords(User.Identity.Name);
+           ViewBag.CountOfRecords=LoadRecords(User.Identity.Name);
             return View("Records", records);
         }
         public ActionResult CreateRecord()
@@ -115,7 +115,7 @@ namespace MyPersonalDiary.Controllers
                 record.AuthorName = user.Name;
                 repository.Records.Create(record);
                 repository.Save();
-                LoadRecords(user.Name, records.Page.CurrentPage);
+               ViewBag.CountOfRecords=LoadRecords(user.Name, records.Page.CurrentPage);
                 return View("Records", records);
             }
             else
@@ -147,7 +147,7 @@ namespace MyPersonalDiary.Controllers
                 record.AuthorName = user.Name;
                 repository.Records.Update(record);
                 repository.Save();
-                LoadRecords(user.Name, records.Page.CurrentPage);
+                ViewBag.CountOfRecords=LoadRecords(user.Name, records.Page.CurrentPage);
                 return View("Records", records);
             }
             else
@@ -160,17 +160,17 @@ namespace MyPersonalDiary.Controllers
         {
               repository.Records.Delete(id);
               repository.Save();
-              LoadRecords(User.Identity.Name,records.Page.CurrentPage, true);
+              ViewBag.CountOfRecords=LoadRecords(User.Identity.Name,records.Page.CurrentPage, true);
               return View("Records",records);
         }
         [HttpPost]
         public ActionResult FilterRecords(DateTime date)
         {
-            LoadRecords(User.Identity.Name, date);
+            ViewBag.CountOfRecords=LoadRecords(User.Identity.Name, date);
             return View("Records",records);
         }
         [NonAction]
-        private void LoadRecords(string userName, int page=1,bool deleteForm=false)
+        private int LoadRecords(string userName, int page=1,bool deleteForm=false)
         {
             int count = page;
             var findedRecords = repository.Records.GetAll(userName);
@@ -183,14 +183,16 @@ namespace MyPersonalDiary.Controllers
            
             records.Records = CanDelete(loadRecords);
             records.Page = new Page { CurrentPage = count, ItemsPerPage = NumPerPage, TotalItems =findedRecords.Count()};
+            return findedRecords.Count();
         }
         [NonAction]
-        private void LoadRecords(string userName, DateTime date, int page=1)
+        private int LoadRecords(string userName, DateTime date, int page=1)
         {
             var findedRecords = repository.Records.FilterByDate(date);
             List<RecordViewModel> filteredRecords = Mapper.Map<IEnumerable<Record>, List<RecordViewModel>>(findedRecords.Skip((page - 1) * NumPerPage).Take(NumPerPage));
             records.Records = CanDelete(filteredRecords);
             records.Page = new Page { CurrentPage = page, ItemsPerPage = NumPerPage, TotalItems = findedRecords.Count() };
+            return findedRecords.Count();
         }
        
         public FileContentResult GetImage(int recordId)

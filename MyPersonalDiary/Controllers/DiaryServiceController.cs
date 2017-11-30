@@ -24,7 +24,7 @@ namespace MyPersonalDiary.Controllers
             authProvider = provider;
         }
         [HttpGet]
-        [Route("{userName}/{password}")]
+        [Route("api/{userName}/{password}")]
         [AllowAnonymous]
         public IHttpActionResult SignIn(string userName,string password)
         {
@@ -45,7 +45,7 @@ namespace MyPersonalDiary.Controllers
                 return BadRequest(ModelState);
             }
         }
-        [Route("GetRecords")]
+        [Route("api/GetRecords")]
         public IHttpActionResult GetRecords()=>Ok(repository.Records.GetAll(User.Identity.Name));
     }
 }
